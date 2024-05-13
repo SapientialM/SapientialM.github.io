@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>LeetCodeCookBook 刷题记录 | SapientialM's Blog |  CM 的学习历程</title><meta name="author" content="SapientialM"><meta name="copyright" content="SapientialM"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="C++ STL标准模板库 STL（Standard Template Library），C++ 标准库的一部分，只需要 #include 即可，是C++算法的神器。 STL 有六大部件：  容器（Containers） 分配器（Allocators） 算法（Algorithm） 迭代器（Iterators） 适配器（Adapters） 仿函数（Functors）  要真正提高 C++ 编程（刷题）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCodeCookBook 刷题记录">
+<meta property="og:url" content="https://sapientialm.github.io/2024/05/13/LeetCode/LeetCodeBook/index.html">
+<meta property="og:site_name" content="SapientialM&#39;s Blog |  CM 的学习历程">
+<meta property="og:description" content="C++ STL标准模板库 STL（Standard Template Library），C++ 标准库的一部分，只需要 #include 即可，是C++算法的神器。 STL 有六大部件：  容器（Containers） 分配器（Allocators） 算法（Algorithm） 迭代器（Iterators） 适配器（Adapters） 仿函数（Functors）  要真正提高 C++ 编程（刷题）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/55795402?v=4">
+<meta property="article:published_time" content="2024-05-13T08:55:38.000Z">
+<meta property="article:modified_time" content="2024-05-13T04:59:58.814Z">
+<meta property="article:author" content="SapientialM">
+<meta property="article:tag" content="LeetCode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/55795402?v=4"><link rel="shortcut icon" href="/img/github.jpg"><link rel="canonical" href="https://sapientialm.github.io/2024/05/13/LeetCode/LeetCodeBook/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LeetCodeCookBook 刷题记录',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-13 12:59:58'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/55795402?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="SapientialM's Blog |  CM 的学习历程"><img class="site-icon" src="https://avatars.githubusercontent.com/u/55795402?v=4"/><span class="site-name">SapientialM's Blog |  CM 的学习历程</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">LeetCodeCookBook 刷题记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-13T08:55:38.000Z" title="发表于 2024-05-13 16:55:38">2024-05-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-13T04:59:58.814Z" title="更新于 2024-05-13 12:59:58">2024-05-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="LeetCodeCookBook 刷题记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="C-STL"><a href="#C-STL" class="headerlink" title="C++ STL"></a>C++ STL</h1><p><strong>标准模板库 STL</strong>（Standard Template Library），C++ 标准库的一部分，只需要 #include 即可，是C++算法的神器。</p>
+<p><strong>STL</strong> 有六大部件：</p>
+<ul>
+<li>容器（Containers）</li>
+<li>分配器（Allocators）</li>
+<li>算法（Algorithm）</li>
+<li>迭代器（Iterators）</li>
+<li>适配器（Adapters）</li>
+<li>仿函数（Functors）</li>
+</ul>
+<p>要真正提高 C++ 编程（刷题）效率，需要将STL六大部件结合使用，有些简单介绍也不重复，参考<a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-stl-tutorial.html">C++ STL 教程 | 菜鸟教程 (runoob.com)</a> 就可以了，我在这里就是记录一些笔记，提供方便。</p>
+<h2 id="容器（Containers）"><a href="#容器（Containers）" class="headerlink" title="容器（Containers）"></a>容器（Containers）</h2><p>容器是用来存储数据的序列，根据不同的存储方式和访问方式可以分为三类</p>
+<h3 id="序列容器"><a href="#序列容器" class="headerlink" title="序列容器"></a>序列容器</h3><h4 id="vector-动态数组"><a href="#vector-动态数组" class="headerlink" title="vector 动态数组"></a>vector 动态数组</h4><p>vector，动态数组，又称变长数组，可以随时进行添加和删除元素。</p>
+<p><strong>头文件：</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>初始化：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">代码</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>vector&lt;T&gt; v;</code></td>
+<td align="center">名为 v 的一维数组，元素类型为 T</td>
+</tr>
+<tr>
+<td align="center"><code>vector&lt;T&gt; v(10);</code></td>
+<td align="center">数组初始大小为 10</td>
+</tr>
+<tr>
+<td align="center"><code>vector&lt;int&gt; v(10,1);</code></td>
+<td align="center">数组元素默认初始值为 1</td>
+</tr>
+<tr>
+<td align="center"><code>vector&lt;int&gt; v&#123;1,2,3,4,5&#125;;</code></td>
+<td align="center">指定初始化数组元素</td>
+</tr>
+<tr>
+<td align="center"><code>vector&lt;int&gt; a&#123;1,2,3,4&#125;; vector&lt;int&gt; b(a);</code></td>
+<td align="center">拷贝初始化</td>
+</tr>
+<tr>
+<td align="center"><code>vector&lt;T&gt; v[10];</code></td>
+<td align="center">二维数组，实际上是存储vector元素的固定数组。可以理解为固定行数10的二维数组</td>
+</tr>
+<tr>
+<td align="center"><code>vector&lt;vector&lt;T&gt;&gt; v ;</code></td>
+<td align="center">二维数组，行列均可变，实际上是存储vector元素的变长数组</td>
+</tr>
+</tbody></table>
+<p><strong>访问：</strong>（后面有关于迭代器的说明）</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">下标法</td>
+<td align="center">同普通数组，如 v[0]</td>
+</tr>
+<tr>
+<td align="center">迭代器</td>
+<td align="center"><code>vector&lt;int&gt;::iterator it = v.begin(); cout &lt;&lt; *it;</code></td>
+</tr>
+<tr>
+<td align="center">Range-Based-For（C++11）</td>
+<td align="center"><code>for (auto &amp;&amp;i : v) &#123; cout &lt;&lt; i;&#125;</code></td>
+</tr>
+</tbody></table>
+<p><strong>方法函数：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>v.front()</code></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h3 id="关联容器"><a href="#关联容器" class="headerlink" title="关联容器"></a>关联容器</h3><h3 id="无序容器"><a href="#无序容器" class="headerlink" title="无序容器"></a>无序容器</h3><h2 id="分配器（Allocators）"><a href="#分配器（Allocators）" class="headerlink" title="分配器（Allocators）"></a>分配器（Allocators）</h2><h2 id="算法（Algorithm）"><a href="#算法（Algorithm）" class="headerlink" title="算法（Algorithm）"></a>算法（Algorithm）</h2><h2 id="迭代器（Iterators）"><a href="#迭代器（Iterators）" class="headerlink" title="迭代器（Iterators）"></a>迭代器（Iterators）</h2><h2 id="适配器（Adapters）"><a href="#适配器（Adapters）" class="headerlink" title="适配器（Adapters）"></a>适配器（Adapters）</h2><h2 id="仿函数（Functors）"><a href="#仿函数（Functors）" class="headerlink" title="仿函数（Functors）"></a>仿函数（Functors）</h2><h1 id="刷题记录"><a href="#刷题记录" class="headerlink" title="刷题记录"></a>刷题记录</h1><p>该刷题记录主要是记录自己的日常刷题，给自己提供一些手感和积累，题目来源于LeetCode，希望通过日积月累，能有所提升和感触。</p>
+<p>题单参考的是 <a target="_blank" rel="noopener" href="https://github.com/halfrost/LeetCode-Go">halfrost&#x2F;LeetCode-Go</a>，希望大家都能一起加油。</p>
+<h2 id="数组-Array"><a href="#数组-Array" class="headerlink" title="数组 Array"></a>数组 Array</h2><h3 id="1-两数之和"><a href="#1-两数之和" class="headerlink" title="1.两数之和"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/">1.两数之和</a></h3><blockquote>
+<p>2024&#x2F;04&#x2F;22</p>
+</blockquote>
+<p>很简单的一道题，最简单的方法是暴力解决，复杂度$O(n^2)$，如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">twoSum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; nums.<span class="built_in">size</span>() - <span class="number">1</span>; i ++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j = i + <span class="number">1</span>; j &lt; nums.<span class="built_in">size</span>(); j ++)</span><br><span class="line">                <span class="keyword">if</span>(nums[i] + nums[j] == target)</span><br><span class="line">                &#123;</span><br><span class="line">                    res.<span class="built_in">push_back</span>(i);</span><br><span class="line">                    res.<span class="built_in">push_back</span>(j);</span><br><span class="line">                    <span class="keyword">return</span> res;</span><br><span class="line">                &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>但是做题都想来个最优解，所以尝试一下将复杂度降低。用哈希表：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">twoSum</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        unordered_map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; hashtable;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nums.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="keyword">auto</span> it = hashtable.<span class="built_in">find</span>(target - nums[i]);</span><br><span class="line">            <span class="keyword">if</span> (it != hashtable.<span class="built_in">end</span>()) &#123;</span><br><span class="line">                <span class="keyword">return</span> &#123;it-&gt;second, i&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            hashtable[nums[i]] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串-String"><a href="#字符串-String" class="headerlink" title="字符串 String"></a>字符串 String</h2><h2 id="双指针-Two-Pointers"><a href="#双指针-Two-Pointers" class="headerlink" title="双指针 Two Pointers"></a>双指针 Two Pointers</h2><h2 id="链表-Linked-List"><a href="#链表-Linked-List" class="headerlink" title="链表 Linked List"></a>链表 Linked List</h2><h2 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 Stack"></a>栈 Stack</h2><h2 id="树-Tree"><a href="#树-Tree" class="headerlink" title="树 Tree"></a>树 Tree</h2><h2 id="动态规划-Dynamic-Programming"><a href="#动态规划-Dynamic-Programming" class="headerlink" title="动态规划 Dynamic Programming"></a>动态规划 Dynamic Programming</h2><h2 id="回溯算法-Backtracking"><a href="#回溯算法-Backtracking" class="headerlink" title="回溯算法 Backtracking"></a>回溯算法 Backtracking</h2><h2 id="深度优先搜索-Depth-First-Search"><a href="#深度优先搜索-Depth-First-Search" class="headerlink" title="深度优先搜索 Depth First Search"></a>深度优先搜索 Depth First Search</h2><h2 id="宽度优先搜索-Breadth-First-Search"><a href="#宽度优先搜索-Breadth-First-Search" class="headerlink" title="宽度优先搜索 Breadth First Search"></a>宽度优先搜索 Breadth First Search</h2><h2 id="二分查找-Binary-Search"><a href="#二分查找-Binary-Search" class="headerlink" title="二分查找 Binary Search"></a>二分查找 Binary Search</h2><h2 id="数论-Math"><a href="#数论-Math" class="headerlink" title="数论 Math"></a>数论 Math</h2><h2 id="哈希表-Hash-Table"><a href="#哈希表-Hash-Table" class="headerlink" title="哈希表 Hash Table"></a>哈希表 Hash Table</h2><h3 id="205-同构字符串"><a href="#205-同构字符串" class="headerlink" title="205.同构字符串"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/isomorphic-strings/description/">205.同构字符串</a></h3><blockquote>
+<p>2024&#x2F;04&#x2F;17</p>
+</blockquote>
+<p>同样简单的一道题，最容易想到的是两个哈希表相互映射进行比较，复杂度$O(n)$，如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isIsomorphic</span><span class="params">(string s, string t)</span> </span>&#123;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>, <span class="type">char</span>&gt;::iterator iterS;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>, <span class="type">char</span>&gt;::iterator iterT;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>, <span class="type">char</span>&gt; mapS;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>, <span class="type">char</span>&gt; mapT;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; s.<span class="built_in">size</span>(); i ++)&#123;</span><br><span class="line">            iterS = mapS.<span class="built_in">find</span>(s[i]);</span><br><span class="line">            <span class="keyword">if</span>(iterS != mapS.<span class="built_in">end</span>())&#123;</span><br><span class="line">                iterT = mapT.<span class="built_in">find</span>(t[i]);</span><br><span class="line">                <span class="keyword">if</span>(iterT == mapT.<span class="built_in">end</span>())&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(!(iterS-&gt;second == t[i] &amp;&amp; iterT-&gt;second == s[i]))&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                iterT = mapT.<span class="built_in">find</span>(t[i]);</span><br><span class="line">                <span class="keyword">if</span>(iterT != mapT.<span class="built_in">end</span>())&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                mapS[s[i]] = t[i];</span><br><span class="line">                mapT[t[i]] = s[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="排序-Sort"><a href="#排序-Sort" class="headerlink" title="排序 Sort"></a>排序 Sort</h2><h2 id="位运算-Bit-Manipulation"><a href="#位运算-Bit-Manipulation" class="headerlink" title="位运算 Bit Manipulation"></a>位运算 Bit Manipulation</h2><h2 id="联合查找-Union-Find"><a href="#联合查找-Union-Find" class="headerlink" title="联合查找 Union Find"></a>联合查找 Union Find</h2><h2 id="滑动窗口-Sliding-Window"><a href="#滑动窗口-Sliding-Window" class="headerlink" title="滑动窗口 Sliding Window"></a>滑动窗口 Sliding Window</h2><h2 id="线段树-Segment-Tree"><a href="#线段树-Segment-Tree" class="headerlink" title="线段树 Segment Tree"></a>线段树 Segment Tree</h2><h2 id="二叉索引树-Binary-Indexed-Tree"><a href="#二叉索引树-Binary-Indexed-Tree" class="headerlink" title="二叉索引树 Binary Indexed Tree"></a>二叉索引树 Binary Indexed Tree</h2><h1 id="动图工具"><a href="#动图工具" class="headerlink" title="动图工具"></a>动图工具</h1><p>FlipaClip</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://github.com/halfrost/LeetCode-Go">LeetCode-Go</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.programmercarl.com/">代码随想录</a></p>
+<p>《挑战程序设计竞赛2：算法与数据结构》</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/yogykwan/acm-challenge-workbook">《挑战程序设计竞赛》习题册攻略 </a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://sapientialm.github.io">SapientialM</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://sapientialm.github.io/2024/05/13/LeetCode/LeetCodeBook/">https://sapientialm.github.io/2024/05/13/LeetCode/LeetCodeBook/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://sapientialm.github.io" target="_blank">SapientialM's Blog |  CM 的学习历程</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a></div><div class="post_share"><div class="social-share" data-image="https://avatars.githubusercontent.com/u/55795402?v=4" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/05/07/Deep-Learning/DL-notes/" title="DL-notes:目录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">DL-notes:目录</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/55795402?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">SapientialM</div><div class="author-info__description">SapientialM 的技术博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/SapientialM"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SapientialM" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#C-STL"><span class="toc-text">C++ STL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%EF%BC%88Containers%EF%BC%89"><span class="toc-text">容器（Containers）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%AE%B9%E5%99%A8"><span class="toc-text">序列容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84"><span class="toc-text">vector 动态数组</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8"><span class="toc-text">关联容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8"><span class="toc-text">无序容器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E9%85%8D%E5%99%A8%EF%BC%88Allocators%EF%BC%89"><span class="toc-text">分配器（Allocators）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%EF%BC%88Algorithm%EF%BC%89"><span class="toc-text">算法（Algorithm）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%EF%BC%88Iterators%EF%BC%89"><span class="toc-text">迭代器（Iterators）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%EF%BC%88Adapters%EF%BC%89"><span class="toc-text">适配器（Adapters）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BF%E5%87%BD%E6%95%B0%EF%BC%88Functors%EF%BC%89"><span class="toc-text">仿函数（Functors）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-text">刷题记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84-Array"><span class="toc-text">数组 Array</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="toc-text">1.两数之和</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2-String"><span class="toc-text">字符串 String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E6%8C%87%E9%92%88-Two-Pointers"><span class="toc-text">双指针 Two Pointers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8-Linked-List"><span class="toc-text">链表 Linked List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88-Stack"><span class="toc-text">栈 Stack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91-Tree"><span class="toc-text">树 Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming"><span class="toc-text">动态规划 Dynamic Programming</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95-Backtracking"><span class="toc-text">回溯算法 Backtracking</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-Depth-First-Search"><span class="toc-text">深度优先搜索 Depth First Search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%BD%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-Breadth-First-Search"><span class="toc-text">宽度优先搜索 Breadth First Search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE-Binary-Search"><span class="toc-text">二分查找 Binary Search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E8%AE%BA-Math"><span class="toc-text">数论 Math</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8-Hash-Table"><span class="toc-text">哈希表 Hash Table</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#205-%E5%90%8C%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">205.同构字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F-Sort"><span class="toc-text">排序 Sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97-Bit-Manipulation"><span class="toc-text">位运算 Bit Manipulation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E6%89%BE-Union-Find"><span class="toc-text">联合查找 Union Find</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3-Sliding-Window"><span class="toc-text">滑动窗口 Sliding Window</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91-Segment-Tree"><span class="toc-text">线段树 Segment Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E7%B4%A2%E5%BC%95%E6%A0%91-Binary-Indexed-Tree"><span class="toc-text">二叉索引树 Binary Indexed Tree</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E5%9B%BE%E5%B7%A5%E5%85%B7"><span class="toc-text">动图工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/13/LeetCode/LeetCodeBook/" title="LeetCodeCookBook 刷题记录">LeetCodeCookBook 刷题记录</a><time datetime="2024-05-13T08:55:38.000Z" title="发表于 2024-05-13 16:55:38">2024-05-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/07/Deep-Learning/DL-notes/" title="DL-notes:目录">DL-notes:目录</a><time datetime="2024-05-07T04:36:52.000Z" title="发表于 2024-05-07 12:36:52">2024-05-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/07/ML-notes/pages/svm/" title="ML-notes:SVM">ML-notes:SVM</a><time datetime="2024-05-07T02:44:52.000Z" title="发表于 2024-05-07 10:44:52">2024-05-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/24/single-cell/usingScanpy/" title="单细胞数据分析">单细胞数据分析</a><time datetime="2024-04-24T08:55:38.000Z" title="发表于 2024-04-24 16:55:38">2024-04-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/16/ML-notes/pages/neural-network/" title="ML-notes:人工神经网络">ML-notes:人工神经网络</a><time datetime="2024-04-16T00:09:52.000Z" title="发表于 2024-04-16 08:09:52">2024-04-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By SapientialM</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.12.0"></script></div></div></body></html>
