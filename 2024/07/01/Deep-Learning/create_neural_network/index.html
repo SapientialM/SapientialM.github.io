@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>如何使用 pytorch 创建一个神经网络 | SapientialM's Blog |  CM 的学习历程</title><meta name="author" content="SapientialM"><meta name="copyright" content="SapientialM"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="构建神经网络1 导入所需包import osimport torchfrom torch import nnfrom torch.utils.data import DataLoaderfrom torchvision import datasets, transforms  2 检查GPU是否可用device &#x3D; (    &quot;cuda&quot;    if torch.cuda.is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用 pytorch 创建一个神经网络">
+<meta property="og:url" content="https://sapientialm.github.io/2024/07/01/Deep-Learning/create_neural_network/index.html">
+<meta property="og:site_name" content="SapientialM&#39;s Blog |  CM 的学习历程">
+<meta property="og:description" content="构建神经网络1 导入所需包import osimport torchfrom torch import nnfrom torch.utils.data import DataLoaderfrom torchvision import datasets, transforms  2 检查GPU是否可用device &#x3D; (    &quot;cuda&quot;    if torch.cuda.is">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/55795402?v=4">
+<meta property="article:published_time" content="2024-07-01T11:57:50.000Z">
+<meta property="article:modified_time" content="2024-07-01T12:01:09.644Z">
+<meta property="article:author" content="SapientialM">
+<meta property="article:tag" content="DL-notes">
+<meta property="article:tag" content="DL">
+<meta property="article:tag" content="notes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/55795402?v=4"><link rel="shortcut icon" href="/img/github.jpg"><link rel="canonical" href="https://sapientialm.github.io/2024/07/01/Deep-Learning/create_neural_network/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '如何使用 pytorch 创建一个神经网络',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-01 20:01:09'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/55795402?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="SapientialM's Blog |  CM 的学习历程"><img class="site-icon" src="https://avatars.githubusercontent.com/u/55795402?v=4"/><span class="site-name">SapientialM's Blog |  CM 的学习历程</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">如何使用 pytorch 创建一个神经网络</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-01T11:57:50.000Z" title="发表于 2024-07-01 19:57:50">2024-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-01T12:01:09.644Z" title="更新于 2024-07-01 20:01:09">2024-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%AC%94%E8%AE%B0/">笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="如何使用 pytorch 创建一个神经网络"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="构建神经网络"><a href="#构建神经网络" class="headerlink" title="构建神经网络"></a>构建神经网络</h1><h2 id="1-导入所需包"><a href="#1-导入所需包" class="headerlink" title="1 导入所需包"></a>1 导入所需包</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-检查GPU是否可用"><a href="#2-检查GPU是否可用" class="headerlink" title="2 检查GPU是否可用"></a>2 检查GPU是否可用</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">device = (</span><br><span class="line">    <span class="string">&quot;cuda&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.cuda.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;mps&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.backends.mps.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Using <span class="subst">&#123;device&#125;</span> device&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(torch.__version__)</span><br><span class="line"><span class="built_in">print</span>(torch.cuda.is_available())</span><br><span class="line"><span class="built_in">print</span>(torch.version.cuda)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Using cuda device
+2.2.2+cu121
+True
+12.1
+</code></pre>
+<p>如果发现GPU不可用，可能是因为torch版本问题（比如我），应该去下载GPU版本。</p>
+<ul>
+<li>在CUDA官网找到合适版本的<a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html">cuda</a>，一般是根据系统平台和显卡版本来选择所需CUDA</li>
+<li>查看安装完成是否<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">版本，看CUDA的版本，比如我的是cuda_11.2</span></span><br><span class="line">nvcc --version</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">驱动，看Driver Version</span></span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></li>
+<li>去PyTorch官网找到合适版本的<a target="_blank" rel="noopener" href="https://pytorch.org/get-started/previous-versions/">PyTorch</a>，一般是根据开发环境来选择，然后复制所给的Commond去shell下安装即可<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">比如我的命令就是</span></span><br><span class="line">pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu121</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-定义我们的神经网络"><a href="#3-定义我们的神经网络" class="headerlink" title="3 定义我们的神经网络"></a>3 定义我们的神经网络</h2><p>pytorch里面一切自定义操作基本上都是继承<code>nn.Module</code>类来实现的，你可以先不去深入了解这个类，但是要知道，我们一般都是通过继承和重构<code>nn.Module</code>来定义我们的神经网络。我们一般重构<code>__init__</code>和<code>forward</code>这两个方法。根据PyTorch官网的说法：<code>__init__</code>初始化神经网络层；<code>forward</code>层之间的数据操作，也是整个网络的核心。<code>__init__</code>只会定义层，而<code>forward</code>负责将层连接起来。实际上类的初始化参数一般是一些<code>固有属性</code>，我们可以将一些带有训练参数的层放在<code>__init__</code>，而没有训练参数的层是可以加入到<code>forward</code>里面的，或者说我们将没有训练参数的层看作是层之间的数据操作。</p>
+<p>当然直接这么说，肯定不是很清晰，我们来看一个官网给的例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NeuralNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line">        self.linear_relu_stack = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">28</span>*<span class="number">28</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">10</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.flatten(x)</span><br><span class="line">        logits = self.linear_relu_stack(x)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line">model = NeuralNetwork().to(device) <span class="comment"># 将网络移入device，并打印结构</span></span><br><span class="line"><span class="built_in">print</span>(model)</span><br></pre></td></tr></table></figure>
+
+<pre><code>NeuralNetwork(
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_relu_stack): Sequential(
+    (0): Linear(in_features=784, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=512, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+</code></pre>
+<p>我们用torchviz可以将神经网络进行一个简单的可视化，当然很多参数可选，这里不一一列举</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install torchviz</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> torchviz <span class="keyword">import</span> make_dot</span><br><span class="line">X = torch.rand(<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, device=device) <span class="comment"># 需要对神经网络进行数据输入，才是一个完整的网络</span></span><br><span class="line">y = model(X)</span><br><span class="line">output = make_dot(y.mean(), params=<span class="built_in">dict</span>(model.named_parameters())) <span class="comment"># 开始绘制</span></span><br><span class="line">output.<span class="built_in">format</span> = <span class="string">&quot;png&quot;</span></span><br><span class="line">output.directory = <span class="string">&quot;.&quot;</span></span><br><span class="line">output.render(<span class="string">&quot;torchviz&quot;</span>, view=<span class="literal">True</span>) <span class="comment"># 会在相对路径下保存一个可视化后的图片并打开</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&#39;torchviz.png&#39;
+</code></pre>
+<p>看起来可能会比较复杂，也看不懂，我们得需要学会看懂神经网络的结构才能看懂结构图。当然，还有诸如draw_convnet、NNSVG、netron等可视化工具会更加优秀。</p>
+<h2 id="4-神经网络模型层"><a href="#4-神经网络模型层" class="headerlink" title="4 神经网络模型层"></a>4 神经网络模型层</h2><p>想要构建一个神经网络并进行训练和预测，我们需要去认识神经网络的构成。假定你已经了解过感知机、人工神经网络的基本概念，那么现在就是来了解一下神经网络的模型层。</p>
+<p>我们直接分解一下官网所给出的这个模型，这是一个简单的前馈神经网络（Feedforward Neural Network），我们先不去了解它的作用，一点点的分解它，看看它最终实现了什么。</p>
+<p>我们先根据官网所说的，取一个大小为 28x28 的 3 张图像的样本小批量作为输入（我们一般将数据的第一个维度看作批量维度并保留）：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">input_image = torch.rand(<span class="number">3</span>,<span class="number">28</span>,<span class="number">28</span>)</span><br><span class="line"><span class="built_in">print</span>(input_image.size())</span><br></pre></td></tr></table></figure>
+
+<pre><code>torch.Size([3, 28, 28])
+</code></pre>
+<h3 id="4-1-nn-Flatten"><a href="#4-1-nn-Flatten" class="headerlink" title="4.1 nn.Flatten"></a>4.1 nn.Flatten</h3><p>虽然是PyTorch的<code>nn.Flatten</code>，但是Flatten层是神经网络中常见的组成部分。在神经网络的训练和预测过程中，输入数据通常需要经过一系列的处理和转换。在这个过程中，Flatten层能够将多维的输入数据转化为一维的线性形式，以便于神经网络的进一步处理。模型中的<code>nn.Flatten</code>，将我们所输入的2D $28\times28$ 图像转换为一个包含 784 个像素值的连续数组，也就是和它表面的意思一样展平这个高维数组。</p>
+<blockquote>
+<p>（<code>nn.Flatten()</code>默认参数是<code>start_dim=1</code>和<code>end_dim=-1</code>，如果你想展平所有维度，可以通过设置<code>start_dim=0</code>来实现）</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">flatten = nn.Flatten()</span><br><span class="line">flat_image = flatten(input_image) <span class="comment"># 将输入的图像展平</span></span><br><span class="line"><span class="built_in">print</span>(flat_image.size())</span><br></pre></td></tr></table></figure>
+
+<pre><code>torch.Size([3, 784])
+</code></pre>
+<p>在卷积神经网络（CNN）中，<code>Flatten</code>层可以将卷积层提取到的特征图展平，便于进一步的特征处理或分类，也便于输入到全连接层（全连接层通常需要一维的输入，后面会讲到）。在构建复杂网络时，<code>Flatten</code>层可以帮助不同类型的层之间进行连接。总的来说，<code>Flatten</code>层起到了桥梁的作用，使得卷积神经网络的层次结构更加灵活和易于设计，并且确保了从卷积层到全连接层的数据传递顺畅，维持了网络的整体性能和效率。</p>
+<h3 id="4-2-nn-Linear"><a href="#4-2-nn-Linear" class="headerlink" title="4.2 nn.Linear"></a>4.2 nn.Linear</h3><p><code>nn.Linear</code>应该耳熟能详，我们称之为线性层（Linear Layer），也可以称为全连接层（Fully Connected Layer）或密集层（Dense Layer）。线性层是一个使用其存储的权重和偏差对输入应用线性变换的模块，也就是对输入数据进行线性变换。线性层对数据的处理方式基本上可以表示为：$y &#x3D; Wx + b$，其中$W$权重矩阵和$b$偏置向量都是可学习的参数。在神经网络的训练和预测过程中，<code>Linear</code>层的作用是将输入数据通过一组权重进行线性变换，然后添加一个偏置项。简单来说，它能够将输入特征映射到输出特征，从而实现对数据的线性组合和转换。如下图是一个单隐藏层的多层感知机（Multilayer Perceptron），一般称为MLP，隐藏层和输出层均是由线性层和激活函数组成：</p>
+<p><img src="/create_neural_network_files/MLP.png#pic_center" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义一个线性层，将28*28维度的向量转换为20维度的向量</span></span><br><span class="line">layer1 = nn.Linear(in_features=<span class="number">28</span>*<span class="number">28</span>, out_features=<span class="number">20</span>)</span><br><span class="line">hidden1 = layer1(flat_image) </span><br><span class="line"><span class="built_in">print</span>(hidden1.size())</span><br></pre></td></tr></table></figure>
+
+<pre><code>torch.Size([3, 20])
+</code></pre>
+<blockquote>
+<p>在这个例子中，in_features&#x3D;28*28表示输入特征的维度，out_features&#x3D;20表示输出特征的维度。nn.Linear层会自动初始化权重和偏置，并在训练过程中通过<strong>反向传播算法</strong>进行调整。简单理解就是，该线性层的输入是784维，而输出是20维。</p>
+</blockquote>
+<h3 id="4-3-nn-ReLU"><a href="#4-3-nn-ReLU" class="headerlink" title="4.3 nn.ReLU"></a>4.3 nn.ReLU</h3><p>ReLU函数，全称Rectified Linear Unit，是人工神经网络中常用的一种激活函数.<br>讲到这里，我们就讲讲常见的激活函数及其作用。</p>
+<h4 id="Sigmoid-激活函数"><a href="#Sigmoid-激活函数" class="headerlink" title="Sigmoid 激活函数"></a>Sigmoid 激活函数</h4><p><strong>数学表达式：</strong><br>$ \sigma(x) &#x3D; \frac{1}{1 + e^{-x}} $</p>
+<p><strong>作用：</strong></p>
+<ul>
+<li>将输入映射到 (0, 1) 之间。</li>
+<li>常用于输出层，尤其是在二分类问题中，输出概率值。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>输出范围在 (0, 1) 之间，可以解释为概率。</li>
+<li>平滑梯度，有助于梯度下降。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>容易导致梯度消失问题。</li>
+<li>输出不是零中心的，会影响网络的训练效率。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</span><br><span class="line"></span><br><span class="line">x = np.linspace(-<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">y = sigmoid(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.title(<span class="string">&quot;Sigmoid Activation Function&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Sigmoid(x)&quot;</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/create_neural_network_files/create_neural_network_20_0.png#pic_center" alt="png"></p>
+<h4 id="Tanh-激活函数"><a href="#Tanh-激活函数" class="headerlink" title="Tanh 激活函数"></a>Tanh 激活函数</h4><p><strong>数学表达式：</strong><br>$ \tanh(x) &#x3D; \frac{e^x - e^{-x}}{e^x + e^{-x}} $</p>
+<p><strong>作用：</strong></p>
+<ul>
+<li>将输入映射到 (-1, 1) 之间。</li>
+<li>常用于隐藏层，提供零中心的输出，有助于训练。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>输出是零中心的，梯度消失问题较轻。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>仍然存在梯度消失问题。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tanh</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> np.tanh(x)</span><br><span class="line"></span><br><span class="line">x = np.linspace(-<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">y = tanh(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.title(<span class="string">&quot;Tanh Activation Function&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Tanh(x)&quot;</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/create_neural_network_files/create_neural_network_22_0.png#pic_center" alt="png"></p>
+<h4 id="ReLU-Rectified-Linear-Unit-激活函数"><a href="#ReLU-Rectified-Linear-Unit-激活函数" class="headerlink" title="ReLU (Rectified Linear Unit) 激活函数"></a>ReLU (Rectified Linear Unit) 激活函数</h4><p><strong>数学表达式：</strong><br>$ \text{ReLU}(x) &#x3D; \max(0, x) $</p>
+<p><strong>作用：</strong></p>
+<ul>
+<li>将输入小于0的部分设为0，大于0的部分保持不变。</li>
+<li>常用于隐藏层，特别是深度神经网络。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>计算简单，收敛速度快。</li>
+<li>减少梯度消失问题。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>输出不是零中心的。</li>
+<li>输入小于0时梯度为零，可能导致“神经元死亡”问题。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">relu</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> np.maximum(<span class="number">0</span>, x)</span><br><span class="line"></span><br><span class="line">x = np.linspace(-<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">y = relu(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.title(<span class="string">&quot;ReLU Activation Function&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;ReLU(x)&quot;</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/create_neural_network_files/create_neural_network_24_0.png#pic_center" alt="png"></p>
+<h4 id="Leaky-ReLU-激活函数"><a href="#Leaky-ReLU-激活函数" class="headerlink" title="Leaky ReLU 激活函数"></a>Leaky ReLU 激活函数</h4><p><strong>数学表达式：</strong><br>$ \text{Leaky ReLU}(x) &#x3D; \begin{cases}<br>      x &amp; \text{if } x &gt; 0 \<br>      \alpha x &amp; \text{if } x \leq 0<br>   \end{cases}<br>$<br>其中 (\alpha) 通常是一个很小的常数，如 0.01。</p>
+<p><strong>作用：</strong></p>
+<ul>
+<li>解决 ReLU 的“神经元死亡”问题。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>输入小于0时仍有较小梯度，避免神经元死亡。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>计算稍复杂。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">leaky_relu</span>(<span class="params">x, alpha=<span class="number">0.01</span></span>):</span><br><span class="line">    <span class="keyword">return</span> np.where(x &gt; <span class="number">0</span>, x, alpha * x)</span><br><span class="line"></span><br><span class="line">x = np.linspace(-<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">y = leaky_relu(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.title(<span class="string">&quot;Leaky ReLU Activation Function&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Leaky ReLU(x)&quot;</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/create_neural_network_files/create_neural_network_26_0.png#pic_center" alt="png"></p>
+<h4 id="Softmax-激活函数"><a href="#Softmax-激活函数" class="headerlink" title="Softmax 激活函数"></a>Softmax 激活函数</h4><p><strong>数学表达式：</strong><br>$ \text{Softmax}(x_i) &#x3D; \frac{e^{x_i}}{\sum_{j} e^{x_j}} $</p>
+<p><strong>作用：</strong></p>
+<ul>
+<li>将输入向量转换为概率分布，总和为1。</li>
+<li>常用于多分类问题的输出层。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>输出可以解释为概率，便于分类。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>计算相对复杂，容易导致数值不稳定。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">softmax</span>(<span class="params">x</span>):</span><br><span class="line">    e_x = np.exp(x - np.<span class="built_in">max</span>(x))</span><br><span class="line">    <span class="keyword">return</span> e_x / e_x.<span class="built_in">sum</span>(axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">x = np.linspace(-<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">y = softmax(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x, y)</span><br><span class="line">plt.title(<span class="string">&quot;Softmax Activation Function&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Softmax(x)&quot;</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/create_neural_network_files/create_neural_network_28_0.png#pic_center" alt="png"></p>
+<h3 id="4-4-nn-Sequential"><a href="#4-4-nn-Sequential" class="headerlink" title="4.4 nn.Sequential"></a>4.4 nn.Sequential</h3><p><code>nn.Sequential</code>是 PyTorch 提供的一个容器模块，它按顺序包含其他子模块，便于构建和管理简单的神经网络结构。通过 nn.Sequential，可以方便地将一系列层（如线性层、激活函数、卷积层等）按顺序堆叠在一起，从而简化模型定义和前向传播的代码。简而言之就是一个包裹的顺序容器。</p>
+<h2 id="5-理解我们的神经网络"><a href="#5-理解我们的神经网络" class="headerlink" title="5 理解我们的神经网络"></a>5 理解我们的神经网络</h2><p>看完这些，我们再来理解这个官网给的例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NeuralNetwork</span>(nn.Module):</span><br><span class="line">    <span class="comment"># 重构 __init__，定义“固有属性”</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 这一步操作是调用父类 nn.Module 的构造函数，确保继承自 nn.Module 的特性正确初始化</span></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># 定义一个展开层 flatten</span></span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line">        <span class="comment"># 定义一个线性容器，可以简化在forward中的调用</span></span><br><span class="line">        self.linear_relu_stack = nn.Sequential(</span><br><span class="line">            <span class="comment"># 容器内包含一个三层网络</span></span><br><span class="line">            <span class="comment"># 这里的512、10都是研究者根据具体任务和数据集进行调试和优化得到的结果</span></span><br><span class="line">            <span class="comment"># 熟悉的调参</span></span><br><span class="line">            nn.Linear(<span class="number">28</span>*<span class="number">28</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">10</span>),</span><br><span class="line">        )</span><br><span class="line">    <span class="comment"># 重构forward，定义前向传播路径</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 在这里定义各个层输入输出的顺序，即层在网络里的位置关系</span></span><br><span class="line">        x = self.flatten(x)</span><br><span class="line">        logits = self.linear_relu_stack(x)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line">model = NeuralNetwork().to(device) <span class="comment"># 将网络移入device，并打印结构</span></span><br><span class="line"><span class="built_in">print</span>(model)</span><br></pre></td></tr></table></figure>
+
+<pre><code>NeuralNetwork(
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_relu_stack): Sequential(
+    (0): Linear(in_features=784, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=512, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+</code></pre>
+<h2 id="6-使用我们的网络"><a href="#6-使用我们的网络" class="headerlink" title="6 使用我们的网络"></a>6 使用我们的网络</h2><p>主要步骤如下：</p>
+<ul>
+<li>定义模型</li>
+<li>数据载入</li>
+<li>损失函数和优化</li>
+<li>训练和评估</li>
+<li>预测与可视化</li>
+</ul>
+<p>先导入所需包：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-1-定义模型"><a href="#6-1-定义模型" class="headerlink" title="6.1 定义模型"></a>6.1 定义模型</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义设备，如果有GPU则使用GPU，否则使用CPU</span></span><br><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义神经网络模型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NeuralNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line">        self.linear_relu_stack = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">28</span>*<span class="number">28</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">10</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.flatten(x)</span><br><span class="line">        logits = self.linear_relu_stack(x)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建神经网络模型实例，并移动到设备上</span></span><br><span class="line">model = NeuralNetwork().to(device)</span><br><span class="line"><span class="built_in">print</span>(model)</span><br></pre></td></tr></table></figure>
+
+<pre><code>NeuralNetwork(
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_relu_stack): Sequential(
+    (0): Linear(in_features=784, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=512, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+</code></pre>
+<h3 id="6-2-数据载入"><a href="#6-2-数据载入" class="headerlink" title="6.2 数据载入"></a>6.2 数据载入</h3><p>我们这次用的模型用于简单图像分类问题，所以可以使用<a target="_blank" rel="noopener" href="https://paperswithcode.com/dataset/mnist">MNIST数据集</a>，导入用的是PyTorch的<a target="_blank" rel="noopener" href="https://pytorch.org/vision/stable/datasets.html">datasets</a>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 加载MNIST数据集并进行预处理</span></span><br><span class="line">transform = transforms.Compose([</span><br><span class="line">    <span class="comment"># 对图片的常用操作，将图像数据转换为形状为 (C, H, W) 的张量</span></span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    <span class="comment"># 因为数据集是灰度图像，所以只有单值标准化</span></span><br><span class="line">    transforms.Normalize((<span class="number">0.5</span>,), (<span class="number">0.5</span>,))</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载MNIST数据集，并划分训练集和测试集（这里会下载下来）</span></span><br><span class="line">train_dataset = datasets.MNIST(root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">True</span>, transform=transform, download=<span class="literal">True</span>)</span><br><span class="line">test_dataset = datasets.MNIST(root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">False</span>, transform=transform)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义批量大小和数据加载器</span></span><br><span class="line">batch_size = <span class="number">64</span></span><br><span class="line">train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=<span class="literal">True</span>)</span><br><span class="line">test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-损失函数和优化"><a href="#6-3-损失函数和优化" class="headerlink" title="6.3 损失函数和优化"></a>6.3 损失函数和优化</h3><p>损失函数选取交叉熵损失函数（Cross Entropy Loss），它是一种常用的损失函数，能够有效地衡量预测类别和真实类别之间的差异。它能够处理模型输出的logits，并且在计算过程中会自动应用Softmax操作，从而简化代码。</p>
+<p>优化器选取随机梯度下降法（Stochastic Gradient Descent, SGD），它是一种简单而有效的优化方法，特别适用于大规模数据集和模型。结合Momentum算法，SGD优化器可以加速收敛并减小震荡，从而在一定程度上提高训练效率和模型性能。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义损失函数</span></span><br><span class="line">criterion = nn.CrossEntropyLoss()</span><br><span class="line"><span class="comment"># 定义优化器</span></span><br><span class="line">optimizer = optim.SGD(model.parameters(), lr=<span class="number">0.01</span>, momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-4-训练和评估"><a href="#6-4-训练和评估" class="headerlink" title="6.4 训练和评估"></a>6.4 训练和评估</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line"><span class="comment"># 训练的目的是通过多个训练周期和批次的数据，不断调整模型参数以最小化损失函数，从而提高模型的性能。</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">model, train_loader, optimizer, criterion, epochs=<span class="number">5</span></span>):</span><br><span class="line">    <span class="comment"># 某些层（如Dropout和BatchNorm）在训练和评估模式下的行为不同，所以需要显式地设置模型为训练模式。</span></span><br><span class="line">    model.train()</span><br><span class="line">    <span class="comment"># 开始训练循环</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        <span class="comment"># 初始化损失</span></span><br><span class="line">        running_loss = <span class="number">0.0</span></span><br><span class="line">        <span class="comment"># 遍历训练数据加载器中的每个批次</span></span><br><span class="line">        <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line">            <span class="comment"># 将数据移动到设备上</span></span><br><span class="line">            data, target = data.to(device), target.to(device)</span><br><span class="line">            <span class="comment"># 梯度清零</span></span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            <span class="comment"># 前向传播，将数据输入模型进行预测</span></span><br><span class="line">            output = model(data)</span><br><span class="line">            <span class="comment"># 计算损失</span></span><br><span class="line">            loss = criterion(output, target)</span><br><span class="line">            <span class="comment"># 将损失反向传播</span></span><br><span class="line">            loss.backward()</span><br><span class="line">            <span class="comment"># 使用优化器更新参数</span></span><br><span class="line">            optimizer.step() </span><br><span class="line">            <span class="comment"># 累计损失</span></span><br><span class="line">            running_loss += loss.item()</span><br><span class="line">            <span class="keyword">if</span> batch_idx % <span class="number">100</span> == <span class="number">99</span>:    <span class="comment"># 每100个批次打印一次训练状态</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&#x27;Epoch [<span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>/<span class="subst">&#123;epochs&#125;</span>], Step [<span class="subst">&#123;batch_idx+<span class="number">1</span>&#125;</span>/<span class="subst">&#123;<span class="built_in">len</span>(train_loader)&#125;</span>], Loss: <span class="subst">&#123;running_loss/<span class="number">100</span>:<span class="number">.4</span>f&#125;</span>&#x27;</span>)</span><br><span class="line">                running_loss = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试模型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">model, test_loader</span>):</span><br><span class="line">    <span class="comment"># 进入评估模式，原因与train同理</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    <span class="comment"># 累计计数</span></span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 测试过程不会进行优化，所以no_grad禁用梯度计算可以加快测试速度</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> data, target <span class="keyword">in</span> test_loader:</span><br><span class="line">            data, target = data.to(device), target.to(device)</span><br><span class="line">            <span class="comment"># 前向传播，将数据输入模型进行预测</span></span><br><span class="line">            outputs = model(data)</span><br><span class="line">            <span class="comment"># 获取预测结果</span></span><br><span class="line">            _, predicted = torch.<span class="built_in">max</span>(outputs.data, <span class="number">1</span>)</span><br><span class="line">            total += target.size(<span class="number">0</span>)</span><br><span class="line">            correct += (predicted == target).<span class="built_in">sum</span>().item()</span><br><span class="line">    accuracy = <span class="number">100</span> * correct / total</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;Test Accuracy: <span class="subst">&#123;accuracy:<span class="number">.2</span>f&#125;</span>%&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-5-预测与可视化"><a href="#6-5-预测与可视化" class="headerlink" title="6.5 预测与可视化"></a>6.5 预测与可视化</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可视化预测结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">visualize_predictions</span>(<span class="params">model, test_loader, num_images=<span class="number">10</span></span>):</span><br><span class="line">    <span class="comment"># 这里和上面定义的test相似，主要是在执行过程中添加了可视化代码和限制了测试数量</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    images_so_far = <span class="number">0</span></span><br><span class="line">    plt.figure(figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> i, (inputs, labels) <span class="keyword">in</span> <span class="built_in">enumerate</span>(test_loader):</span><br><span class="line">            inputs = inputs.to(device)</span><br><span class="line">            labels = labels.to(device)</span><br><span class="line">            <span class="comment"># 获取每张图的预测结果，并将数据绘制出来进行比对</span></span><br><span class="line">            outputs = model(inputs)</span><br><span class="line">            _, preds = torch.<span class="built_in">max</span>(outputs, <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(inputs.size(<span class="number">0</span>)):</span><br><span class="line">                images_so_far += <span class="number">1</span></span><br><span class="line">                ax = plt.subplot(num_images // <span class="number">5</span>, <span class="number">5</span>, images_so_far)</span><br><span class="line">                ax.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">                ax.set_title(<span class="string">f&#x27;Predicted: <span class="subst">&#123;preds[j]&#125;</span> (Label: <span class="subst">&#123;labels[j]&#125;</span>)&#x27;</span>)</span><br><span class="line">                <span class="comment"># imshow用于在绘图窗口中显示图像</span></span><br><span class="line">                ax.imshow(inputs.cpu().data[j].numpy().squeeze(), cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">                <span class="keyword">if</span> images_so_far == num_images:</span><br><span class="line">                    model.train()</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">        model.train()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行训练</span></span><br><span class="line">train(model, train_loader, optimizer, criterion)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行测试</span></span><br><span class="line">test(model, test_loader)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化预测结果</span></span><br><span class="line">visualize_predictions(model, test_loader, num_images=<span class="number">10</span>)</span><br><span class="line">plt.suptitle(<span class="string">&#x27;Model Predictions&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>NeuralNetwork(
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_relu_stack): Sequential(
+    (0): Linear(in_features=784, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=512, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+Epoch [1/5], Step [100/938], Loss: 1.1812
+Epoch [1/5], Step [200/938], Loss: 0.4243
+Epoch [1/5], Step [300/938], Loss: 0.3437
+Epoch [1/5], Step [400/938], Loss: 0.3305
+Epoch [1/5], Step [500/938], Loss: 0.2820
+Epoch [1/5], Step [600/938], Loss: 0.2634
+Epoch [1/5], Step [700/938], Loss: 0.2482
+Epoch [1/5], Step [800/938], Loss: 0.2131
+Epoch [1/5], Step [900/938], Loss: 0.2161
+Epoch [2/5], Step [100/938], Loss: 0.1853
+Epoch [2/5], Step [200/938], Loss: 0.1658
+Epoch [2/5], Step [300/938], Loss: 0.1766
+Epoch [2/5], Step [400/938], Loss: 0.1507
+Epoch [2/5], Step [500/938], Loss: 0.1606
+Epoch [2/5], Step [600/938], Loss: 0.1347
+Epoch [2/5], Step [700/938], Loss: 0.1407
+Epoch [2/5], Step [800/938], Loss: 0.1371
+Epoch [2/5], Step [900/938], Loss: 0.1283
+Epoch [3/5], Step [100/938], Loss: 0.1027
+Epoch [3/5], Step [200/938], Loss: 0.1169
+Epoch [3/5], Step [300/938], Loss: 0.1150
+Epoch [3/5], Step [400/938], Loss: 0.1077
+Epoch [3/5], Step [500/938], Loss: 0.0986
+Epoch [3/5], Step [600/938], Loss: 0.1139
+Epoch [3/5], Step [700/938], Loss: 0.1110
+Epoch [3/5], Step [800/938], Loss: 0.0986
+Epoch [3/5], Step [900/938], Loss: 0.0927
+Epoch [4/5], Step [100/938], Loss: 0.0908
+Epoch [4/5], Step [200/938], Loss: 0.0834
+Epoch [4/5], Step [300/938], Loss: 0.0957
+Epoch [4/5], Step [400/938], Loss: 0.0742
+Epoch [4/5], Step [500/938], Loss: 0.0873
+Epoch [4/5], Step [600/938], Loss: 0.0786
+Epoch [4/5], Step [700/938], Loss: 0.0901
+Epoch [4/5], Step [800/938], Loss: 0.0828
+Epoch [4/5], Step [900/938], Loss: 0.0810
+Epoch [5/5], Step [100/938], Loss: 0.0682
+Epoch [5/5], Step [200/938], Loss: 0.0729
+Epoch [5/5], Step [300/938], Loss: 0.0601
+Epoch [5/5], Step [400/938], Loss: 0.0684
+Epoch [5/5], Step [500/938], Loss: 0.0755
+Epoch [5/5], Step [600/938], Loss: 0.0706
+Epoch [5/5], Step [700/938], Loss: 0.0733
+Epoch [5/5], Step [800/938], Loss: 0.0579
+Epoch [5/5], Step [900/938], Loss: 0.0621
+Test Accuracy: 97.45%
+</code></pre>
+<p><img src="/create_neural_network_files/create_neural_network_45_1.png#pic_center" alt="png"></p>
+<p>神经网络（尤其是深度神经网络）的一个非常吸引人的特点就是：它们具有很强的通用性，可以通过不同的数据集进行训练，以解决各种不同的任务。我们可以将该模型使用另外的数据集进行训练和测试，仍然有不低的准确率。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义设备，如果有GPU则使用GPU，否则使用CPU</span></span><br><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义神经网络模型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NeuralNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line">        self.linear_relu_stack = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">28</span>*<span class="number">28</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">10</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.flatten(x)</span><br><span class="line">        logits = self.linear_relu_stack(x)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建神经网络模型实例，并移动到设备上</span></span><br><span class="line">model = NeuralNetwork().to(device)</span><br><span class="line"><span class="built_in">print</span>(model)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载FashionMNIST数据集并进行预处理</span></span><br><span class="line">transform = transforms.Compose([</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize((<span class="number">0.5</span>,), (<span class="number">0.5</span>,))</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">train_dataset = datasets.FashionMNIST(root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">True</span>, transform=transform, download=<span class="literal">True</span>)</span><br><span class="line">test_dataset = datasets.FashionMNIST(root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">False</span>, transform=transform)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义批量大小和数据加载器</span></span><br><span class="line">batch_size = <span class="number">64</span></span><br><span class="line">train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=<span class="literal">True</span>)</span><br><span class="line">test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义损失函数和优化器</span></span><br><span class="line">criterion = nn.CrossEntropyLoss()</span><br><span class="line">optimizer = optim.SGD(model.parameters(), lr=<span class="number">0.01</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">model, train_loader, optimizer, criterion, epochs=<span class="number">5</span></span>):</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        running_loss = <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line">            data, target = data.to(device), target.to(device)</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            output = model(data)</span><br><span class="line">            loss = criterion(output, target)</span><br><span class="line">            loss.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">            running_loss += loss.item()</span><br><span class="line">            <span class="keyword">if</span> batch_idx % <span class="number">100</span> == <span class="number">99</span>:    <span class="comment"># 每100个批次打印一次训练状态</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&#x27;Epoch [<span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>/<span class="subst">&#123;epochs&#125;</span>], Step [<span class="subst">&#123;batch_idx+<span class="number">1</span>&#125;</span>/<span class="subst">&#123;<span class="built_in">len</span>(train_loader)&#125;</span>], Loss: <span class="subst">&#123;running_loss/<span class="number">100</span>:<span class="number">.4</span>f&#125;</span>&#x27;</span>)</span><br><span class="line">                running_loss = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试模型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">model, test_loader</span>):</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> data, target <span class="keyword">in</span> test_loader:</span><br><span class="line">            data, target = data.to(device), target.to(device)</span><br><span class="line">            outputs = model(data)</span><br><span class="line">            _, predicted = torch.<span class="built_in">max</span>(outputs.data, <span class="number">1</span>)</span><br><span class="line">            total += target.size(<span class="number">0</span>)</span><br><span class="line">            correct += (predicted == target).<span class="built_in">sum</span>().item()</span><br><span class="line">    accuracy = <span class="number">100</span> * correct / total</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;Test Accuracy: <span class="subst">&#123;accuracy:<span class="number">.2</span>f&#125;</span>%&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化预测结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">visualize_predictions</span>(<span class="params">model, test_loader, num_images=<span class="number">10</span></span>):</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    images_so_far = <span class="number">0</span></span><br><span class="line">    plt.figure(figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> i, (inputs, labels) <span class="keyword">in</span> <span class="built_in">enumerate</span>(test_loader):</span><br><span class="line">            inputs = inputs.to(device)</span><br><span class="line">            labels = labels.to(device)</span><br><span class="line">            outputs = model(inputs)</span><br><span class="line">            _, preds = torch.<span class="built_in">max</span>(outputs, <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(inputs.size(<span class="number">0</span>)):</span><br><span class="line">                images_so_far += <span class="number">1</span></span><br><span class="line">                ax = plt.subplot(num_images // <span class="number">5</span>, <span class="number">5</span>, images_so_far)</span><br><span class="line">                ax.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">                ax.set_title(<span class="string">f&#x27;Predicted: <span class="subst">&#123;preds[j]&#125;</span> (Label: <span class="subst">&#123;labels[j]&#125;</span>)&#x27;</span>)</span><br><span class="line">                ax.imshow(inputs.cpu().data[j].numpy().squeeze(), cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">                <span class="keyword">if</span> images_so_far == num_images:</span><br><span class="line">                    model.train()</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">        model.train()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行训练</span></span><br><span class="line">train(model, train_loader, optimizer, criterion)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行测试</span></span><br><span class="line">test(model, test_loader)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化预测结果</span></span><br><span class="line">visualize_predictions(model, test_loader, num_images=<span class="number">10</span>)</span><br><span class="line">plt.suptitle(<span class="string">&#x27;Model Predictions&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>NeuralNetwork(
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (linear_relu_stack): Sequential(
+    (0): Linear(in_features=784, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=512, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz to ./data\FashionMNIST\raw\train-images-idx3-ubyte.gz
+
+
+100%|██████████| 26421880/26421880 [00:09&lt;00:00, 2925221.13it/s]
+
+
+Extracting ./data\FashionMNIST\raw\train-images-idx3-ubyte.gz to ./data\FashionMNIST\raw
+
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-labels-idx1-ubyte.gz
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-labels-idx1-ubyte.gz to ./data\FashionMNIST\raw\train-labels-idx1-ubyte.gz
+
+
+100%|██████████| 29515/29515 [00:00&lt;00:00, 109466.29it/s]
+
+
+Extracting ./data\FashionMNIST\raw\train-labels-idx1-ubyte.gz to ./data\FashionMNIST\raw
+
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz to ./data\FashionMNIST\raw\t10k-images-idx3-ubyte.gz
+
+
+100%|██████████| 4422102/4422102 [00:03&lt;00:00, 1300467.91it/s]
+
+
+Extracting ./data\FashionMNIST\raw\t10k-images-idx3-ubyte.gz to ./data\FashionMNIST\raw
+
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz
+Downloading http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz to ./data\FashionMNIST\raw\t10k-labels-idx1-ubyte.gz
+
+
+100%|██████████| 5148/5148 [00:00&lt;?, ?it/s]
+
+
+Extracting ./data\FashionMNIST\raw\t10k-labels-idx1-ubyte.gz to ./data\FashionMNIST\raw
+
+Epoch [1/5], Step [100/938], Loss: 1.1565
+Epoch [1/5], Step [200/938], Loss: 0.5964
+Epoch [1/5], Step [300/938], Loss: 0.5602
+Epoch [1/5], Step [400/938], Loss: 0.4892
+Epoch [1/5], Step [500/938], Loss: 0.4697
+Epoch [1/5], Step [600/938], Loss: 0.4513
+Epoch [1/5], Step [700/938], Loss: 0.4250
+Epoch [1/5], Step [800/938], Loss: 0.4449
+Epoch [1/5], Step [900/938], Loss: 0.4222
+Epoch [2/5], Step [100/938], Loss: 0.3898
+Epoch [2/5], Step [200/938], Loss: 0.4246
+Epoch [2/5], Step [300/938], Loss: 0.3827
+Epoch [2/5], Step [400/938], Loss: 0.3843
+Epoch [2/5], Step [500/938], Loss: 0.3889
+Epoch [2/5], Step [600/938], Loss: 0.3798
+Epoch [2/5], Step [700/938], Loss: 0.3719
+Epoch [2/5], Step [800/938], Loss: 0.3580
+Epoch [2/5], Step [900/938], Loss: 0.3599
+Epoch [3/5], Step [100/938], Loss: 0.3433
+Epoch [3/5], Step [200/938], Loss: 0.3238
+Epoch [3/5], Step [300/938], Loss: 0.3418
+Epoch [3/5], Step [400/938], Loss: 0.3485
+Epoch [3/5], Step [500/938], Loss: 0.3291
+Epoch [3/5], Step [600/938], Loss: 0.3552
+Epoch [3/5], Step [700/938], Loss: 0.3283
+Epoch [3/5], Step [800/938], Loss: 0.3576
+Epoch [3/5], Step [900/938], Loss: 0.3445
+Epoch [4/5], Step [100/938], Loss: 0.3389
+Epoch [4/5], Step [200/938], Loss: 0.3166
+Epoch [4/5], Step [300/938], Loss: 0.3058
+Epoch [4/5], Step [400/938], Loss: 0.3002
+Epoch [4/5], Step [500/938], Loss: 0.3100
+Epoch [4/5], Step [600/938], Loss: 0.3184
+Epoch [4/5], Step [700/938], Loss: 0.3259
+Epoch [4/5], Step [800/938], Loss: 0.2956
+Epoch [4/5], Step [900/938], Loss: 0.3196
+Epoch [5/5], Step [100/938], Loss: 0.3010
+Epoch [5/5], Step [200/938], Loss: 0.3058
+Epoch [5/5], Step [300/938], Loss: 0.2970
+Epoch [5/5], Step [400/938], Loss: 0.2836
+Epoch [5/5], Step [500/938], Loss: 0.3009
+Epoch [5/5], Step [600/938], Loss: 0.2991
+Epoch [5/5], Step [700/938], Loss: 0.2695
+Epoch [5/5], Step [800/938], Loss: 0.2856
+Epoch [5/5], Step [900/938], Loss: 0.2897
+Test Accuracy: 86.87%
+</code></pre>
+<p><img src="/create_neural_network_files/create_neural_network_47_9.png#pic_center" alt="png"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://pytorch.ac.cn/tutorials/beginner/basics/buildmodel_tutorial.html">PyTorch-构建神经网络</a></li>
+<li><a target="_blank" rel="noopener" href="https://pytorch-cn.readthedocs.io/zh/latest/package_references/torch-nn/">PyTorch中文文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.d2l.ai/chapter_multilayer-perceptrons/mlp.html">d2L-多层感知机</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://sapientialm.github.io">SapientialM</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://sapientialm.github.io/2024/07/01/Deep-Learning/create_neural_network/">https://sapientialm.github.io/2024/07/01/Deep-Learning/create_neural_network/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://sapientialm.github.io" target="_blank">SapientialM's Blog |  CM 的学习历程</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DL-notes/">DL-notes</a><a class="post-meta__tags" href="/tags/DL/">DL</a><a class="post-meta__tags" href="/tags/notes/">notes</a></div><div class="post_share"><div class="social-share" data-image="https://avatars.githubusercontent.com/u/55795402?v=4" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/06/26/Deep-Learning/DL-notes/" title="DL-notes:目录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">DL-notes:目录</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/06/26/Deep-Learning/DL-notes/" title="DL-notes:目录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-26</div><div class="title">DL-notes:目录</div></div></a></div><div><a href="/2024/04/12/ML-notes/ML-notes/" title="ML-notes:目录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-12</div><div class="title">ML-notes:目录</div></div></a></div><div><a href="/2024/04/14/ML-notes/pages/introduction/" title="ML-notes:绪论"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-14</div><div class="title">ML-notes:绪论</div></div></a></div><div><a href="/2024/04/15/ML-notes/pages/decision-tree/" title="ML-notes:决策树"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-15</div><div class="title">ML-notes:决策树</div></div></a></div><div><a href="/2024/04/15/ML-notes/pages/linear-model/" title="ML-notes:线性模型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-15</div><div class="title">ML-notes:线性模型</div></div></a></div><div><a href="/2024/04/15/ML-notes/pages/model-evaluation/" title="ML-notes:模型评估与选择"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-15</div><div class="title">ML-notes:模型评估与选择</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/55795402?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">SapientialM</div><div class="author-info__description">SapientialM 的技术博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/SapientialM"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SapientialM" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">构建神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%BC%E5%85%A5%E6%89%80%E9%9C%80%E5%8C%85"><span class="toc-text">1 导入所需包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A3%80%E6%9F%A5GPU%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8"><span class="toc-text">2 检查GPU是否可用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%9A%E4%B9%89%E6%88%91%E4%BB%AC%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">3 定义我们的神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%B1%82"><span class="toc-text">4 神经网络模型层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-nn-Flatten"><span class="toc-text">4.1 nn.Flatten</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-nn-Linear"><span class="toc-text">4.2 nn.Linear</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-nn-ReLU"><span class="toc-text">4.3 nn.ReLU</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Sigmoid-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-text">Sigmoid 激活函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tanh-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-text">Tanh 激活函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ReLU-Rectified-Linear-Unit-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-text">ReLU (Rectified Linear Unit) 激活函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Leaky-ReLU-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-text">Leaky ReLU 激活函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Softmax-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-text">Softmax 激活函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-nn-Sequential"><span class="toc-text">4.4 nn.Sequential</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%90%86%E8%A7%A3%E6%88%91%E4%BB%AC%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">5 理解我们的神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BD%BF%E7%94%A8%E6%88%91%E4%BB%AC%E7%9A%84%E7%BD%91%E7%BB%9C"><span class="toc-text">6 使用我们的网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B"><span class="toc-text">6.1 定义模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%95%B0%E6%8D%AE%E8%BD%BD%E5%85%A5"><span class="toc-text">6.2 数据载入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E5%92%8C%E4%BC%98%E5%8C%96"><span class="toc-text">6.3 损失函数和优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E8%AE%AD%E7%BB%83%E5%92%8C%E8%AF%84%E4%BC%B0"><span class="toc-text">6.4 训练和评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-%E9%A2%84%E6%B5%8B%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">6.5 预测与可视化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Deep-Learning/create_neural_network/" title="如何使用 pytorch 创建一个神经网络">如何使用 pytorch 创建一个神经网络</a><time datetime="2024-07-01T11:57:50.000Z" title="发表于 2024-07-01 19:57:50">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/26/Deep-Learning/DL-notes/" title="DL-notes:目录">DL-notes:目录</a><time datetime="2024-06-26T04:36:52.000Z" title="发表于 2024-06-26 12:36:52">2024-06-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/13/LeetCode/LeetCodeBook/" title="LeetCodeCookBook 刷题记录">LeetCodeCookBook 刷题记录</a><time datetime="2024-06-13T10:09:38.000Z" title="发表于 2024-06-13 18:09:38">2024-06-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/07/ML-notes/pages/svm/" title="ML-notes:SVM">ML-notes:SVM</a><time datetime="2024-05-07T02:44:52.000Z" title="发表于 2024-05-07 10:44:52">2024-05-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/24/single-cell/usingScanpy/" title="单细胞数据分析">单细胞数据分析</a><time datetime="2024-04-24T08:55:38.000Z" title="发表于 2024-04-24 16:55:38">2024-04-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By SapientialM</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.12.0"></script></div></div></body></html>
